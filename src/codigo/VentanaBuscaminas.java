@@ -19,7 +19,6 @@ public class VentanaBuscaminas extends javax.swing.JFrame {
 
     int filas = 15;
     int columnas = 20;
-    int numeroMinas = 30;
     
     
     Boton [][] arrayBotones = new Boton[filas][columnas];
@@ -48,9 +47,7 @@ public class VentanaBuscaminas extends javax.swing.JFrame {
                 });
             }
         }
-        for(int i = 0; i < numeroMinas; i++){
-            ponMinas();
-        }
+        ponMinas(30);
         cuentaMinas();
     }
 
@@ -77,17 +74,43 @@ public class VentanaBuscaminas extends javax.swing.JFrame {
                 }
                  listaBotones.remove(b);
             }
+            if(miBoton.mina == 1){
+                for(int i = 0; i < filas; i++){
+                    for(int j = 0; j < columnas; j++){
+                        arrayBotones[i][j].setEnabled(false);
+                        arrayBotones[i][j].setText(String.valueOf(arrayBotones[i][j].numeroMinasAlRededor));
+                        if(arrayBotones[i][j].mina == 1){
+                            arrayBotones[i][j].setText("m");
+                        }
+                        if(arrayBotones[i][j].numeroMinasAlRededor == 0){
+                            arrayBotones[i][j].setText("");
+                        }
+                    }
+                }
+            }
+            if(miBoton.numeroMinasAlRededor > 0){
+                for(int i = 0; i < filas; i++){
+                    for(int j = 0; j < columnas; j++){
+                        if(miBoton.mina != 1){
+                            miBoton.setText(String.valueOf(miBoton.numeroMinasAlRededor));
+                        }
+                    }
+                }
+            }
+            else{
+                miBoton.setText("");
+            }
         }
     }
     
-    private void ponMinas(){
+    private void ponMinas(int numeroMinas){
         Random r = new Random();
         for(int i = 0; i < numeroMinas; i++){
             int f = r.nextInt(filas);
             int c = r.nextInt(columnas);
             
             arrayBotones[f][c].setMina(1);
-            arrayBotones[f][c].setText("b");
+            arrayBotones[f][c].setText("");
             
         }
     }
@@ -97,30 +120,17 @@ public class VentanaBuscaminas extends javax.swing.JFrame {
         int minas = 0;
         for(int i = 0; i < filas; i++){
             for(int j = 0; j < columnas; j++){
-                if((i > 0) && (j > 0) && (i < filas -1) && (j < columnas -1)){
-                    minas += arrayBotones[i-1][j-1].getMina();
-                    minas += arrayBotones[i][j-1].getMina();
-                    minas += arrayBotones[i+1][j-1].getMina();
-                    
-                    minas += arrayBotones[i-1][j].getMina();
-                    minas += arrayBotones[i+1][j-1].getMina();
-                    
-                    minas += arrayBotones[i-1][j+1].getMina();
-                    minas += arrayBotones[i][j+1].getMina();
-                    minas += arrayBotones[i+1][j+1].getMina();
+                for(int k = -1; k < 2; k++){
+                    for(int m = -1; m < 2; m++){
+                if((i + k >= 0) && (j + m >= 0) && (i + k < filas) && (j + m < columnas)){
+                    minas = minas + arrayBotones[i + k][j + m].mina;
+                }
+                    }
                 }
                 arrayBotones[i][j].setNumeroMinasAlRededor(minas);
-                
-                
-                //TODO comentar la siguiente parte para que no aparezca los números
-                //al iniciar la partida
-                if((arrayBotones[i][j].numeroMinasAlRededor > 0) && (arrayBotones[i][j].mina == 0)){
-                     arrayBotones[i][j].setText(String.valueOf(minas));
-                }
                 minas = 0;
             }
         }
-        
     }
     
     /**
