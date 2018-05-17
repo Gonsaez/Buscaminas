@@ -66,6 +66,7 @@ public class VentanaBuscaminas extends javax.swing.JFrame {
                             if(arrayBotones[b.i + i][b.j + j].isEnabled()){
                                 if (arrayBotones[b.i + i][b.j + j].numeroMinasAlRededor == 0){
                                    arrayBotones[b.i + i][b.j + j].setEnabled(false);
+                                   arrayBotones[b.i + i][b.j + j].setText("0");
                                    listaBotones.add(arrayBotones[b.i + i][b.j + j]);
                                } 
                             }
@@ -83,7 +84,7 @@ public class VentanaBuscaminas extends javax.swing.JFrame {
                             arrayBotones[i][j].setText("m");
                         }
                         if(arrayBotones[i][j].numeroMinasAlRededor == 0){
-                            arrayBotones[i][j].setText("");
+                            arrayBotones[i][j].setText("0");
                         }
                     }
                 }
@@ -98,7 +99,7 @@ public class VentanaBuscaminas extends javax.swing.JFrame {
                 }
             }
             else{
-                miBoton.setText("");
+                miBoton.setText("0");
             }
         }
     }
